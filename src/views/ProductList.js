@@ -733,7 +733,7 @@ function ProductList({ addToCart }) {
         <button onClick={handlepagination1} className="join-item btn">
           1
         </button>
-        <button onClick={handlepagination1} className="join-item btn btn-active">2</button>
+        <button onClick={handlepagination1} className="join-item btn">2</button>
         <button onClick={handlepagination1} className="join-item btn">3</button>
         <button onClick={handlepagination1} className="join-item btn">4</button>
       </div>
