@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
@@ -44,91 +44,81 @@ function ProductList({ addToCart }) {
   const [electronics, setElectronics] = useState("");
   const [men, setMen] = useState("");
   const [women, setWomen] = useState("");
-  const [asce, setAsce] = useState('')
-  const [desc, setDesc] = useState('')
-  const [search, setSearch] = useState('')
-  const [data,setData] = useState('')
-  const [pagination, setPagination] = useState('')
-  const navigate = useNavigate()
+  const [asce, setAsce] = useState("");
+  const [desc, setDesc] = useState("");
+  const [search, setSearch] = useState("");
+  const [data, setData] = useState("");
+  const [pagination, setPagination] = useState("");
+  const navigate = useNavigate();
 
-    const handlepagination1 = () => {
-        setProduct('')
-        fetch(`https://fakestoreapi.com/products?limit=5`)
-        .then((response) => response.json())
-        .then((json) => {
-          setPagination(json);
-        });
-    }
+  const handlepagination1 = () => {
+    setProduct("");
+    fetch(`https://fakestoreapi.com/products?limit=5`)
+      .then((response) => response.json())
+      .then((json) => {
+        setPagination(json);
+      });
+  };
 
+  const handleback = () => {
+    fetch("https://fakestoreapi.com/products")
+      .then((response) => response.json())
+      .then((json) => {
+        setProduct(json);
+      });
+  };
 
-    const handleback = () => {
-        fetch("https://fakestoreapi.com/products")
-        .then((response) => response.json())
-        .then((json) => {
-          setProduct(json);
-        });
-    }
+  // searching
 
-// searching
-
-const searchItem = (e) => {
-   setSearch(e.target.value)
-   const searchTerm = e.target.value;
-   setProduct('')
-//    if (e.target.value)
-   fetch(`https://fakestoreapi.com/products/${searchTerm}`)
-        .then((response) => response.json())
-        .then((json) => {
-          setData(json);
-        });
-
-}
-//sorting
+  const searchItem = (e) => {
+    setSearch(e.target.value);
+    const searchTerm = e.target.value;
+    setProduct("");
+    //    if (e.target.value)
+    fetch(`https://fakestoreapi.com/products/${searchTerm}`)
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json);
+      });
+  };
+  //sorting
 
   const handleSort = (name) => {
-     setProduct('')
-     setJewellery('')
-     setElectronics('')
-     setMen('')
-     setWomen('')
-     if (name == 'Ascending')
-     {
-        setDesc('')
-        fetch("https://fakestoreapi.com/products?sort=asce")
+    setProduct("");
+    setJewellery("");
+    setElectronics("");
+    setMen("");
+    setWomen("");
+    if (name == "Ascending") {
+      setDesc("");
+      fetch("https://fakestoreapi.com/products?sort=asce")
         .then((response) => response.json())
         .then((json) => {
           setAsce(json);
         });
-     }
-     else if(name == 'Descending'){
-        setAsce('')
-        fetch("https://fakestoreapi.com/products?sort=desc")
-       .then((response) => response.json())
-       .then((json) => {
-         setDesc(json);
-    });
-     }
-  }
+    } else if (name == "Descending") {
+      setAsce("");
+      fetch("https://fakestoreapi.com/products?sort=desc")
+        .then((response) => response.json())
+        .then((json) => {
+          setDesc(json);
+        });
+    }
+  };
 
-
-
-
-
-
-// filtering
+  // filtering
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
-    .then((response) => response.json())
-    .then((json) => {
-      setProduct(json);
-    });
-
-  }, [])
+      .then((response) => response.json())
+      .then((json) => {
+        setProduct(json);
+      });
+  }, []);
 
   const handleChange = (value) => (event) => {
     if (event.target.checked == true) {
-        setProduct('')
+      setProduct("");
       if (value == "jewellery") {
         fetch("https://fakestoreapi.com/products/category/jewelery")
           .then((response) => response.json())
@@ -155,13 +145,12 @@ const searchItem = (e) => {
           });
       }
     } else {
+      fetch("https://fakestoreapi.com/products")
+        .then((response) => response.json())
+        .then((json) => {
+          setProduct(json);
+        });
 
-    fetch("https://fakestoreapi.com/products")
-    .then((response) => response.json())
-    .then((json) => {
-      setProduct(json);
-    });
-      
       if (value == "jewellery") {
         setJewellery("");
       } else if (value == "electronics") {
@@ -296,16 +285,30 @@ const searchItem = (e) => {
 
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-              <button onClick={handleback}>back</button>
+                <button onClick={handleback}>back</button>
                 {/* search */}
-     
-            <label className="input input-bordered flex items-center gap-2">
-              <input type="text" className="grow" placeholder="Search"
-              onChange={searchItem} />
-              <button onClick={handleback}>back</button>
-             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-70"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
-            </label>
 
+                <label className="input input-bordered flex items-center gap-2">
+                  <input
+                    type="text"
+                    className="grow"
+                    placeholder="Search"
+                    onChange={searchItem}
+                  />
+                  <button onClick={handleback}>back</button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="w-4 h-4 opacity-70"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </label>
 
                 <div className="flex items-center">
                   <Menu as="div" className="relative inline-block text-left">
@@ -454,7 +457,7 @@ const searchItem = (e) => {
           </div>
         </div>
       </div>
-{/* rendering products */}
+      {/* rendering products */}
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           products
@@ -471,7 +474,19 @@ const searchItem = (e) => {
                   <h2 className="card-title">{product[key].title}</h2>
                   <p>{product[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: product[key].id, image:product[key].image, title: product[key].title, category:product[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: product[key].id,
+                          image: product[key].image,
+                          title: product[key].title,
+                          category: product[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -479,7 +494,7 @@ const searchItem = (e) => {
           ))}
         </div>
 
-{/* category jewellery */}
+        {/* category jewellery */}
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(jewellery).map((key) => (
@@ -492,7 +507,19 @@ const searchItem = (e) => {
                   <h2 className="card-title">{jewellery[key].title}</h2>
                   <p>{jewellery[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: jewellery[key].id, image:jewellery[key].image, title: jewellery[key].title, category:jewellery[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: jewellery[key].id,
+                          image: jewellery[key].image,
+                          title: jewellery[key].title,
+                          category: jewellery[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -500,8 +527,7 @@ const searchItem = (e) => {
           ))}
         </div>
 
-
-{/* category electronics */}
+        {/* category electronics */}
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(electronics).map((key) => (
             <div key={electronics[key].id} className="group relative">
@@ -513,15 +539,25 @@ const searchItem = (e) => {
                   <h2 className="card-title">{electronics[key].title}</h2>
                   <p>{electronics[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: electronics[key].id, image:electronics[key].image, title: electronics[key].title, category:electronics[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: electronics[key].id,
+                          image: electronics[key].image,
+                          title: electronics[key].title,
+                          category: electronics[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(men).map((key) => (
@@ -534,14 +570,25 @@ const searchItem = (e) => {
                   <h2 className="card-title">{men[key].title}</h2>
                   <p>{men[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: men[key].id, image:men[key].image, title: men[key].title, category:men[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: men[key].id,
+                          image: men[key].image,
+                          title: men[key].title,
+                          category: men[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(women).map((key) => (
@@ -554,7 +601,19 @@ const searchItem = (e) => {
                   <h2 className="card-title">{women[key].title}</h2>
                   <p>{women[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: women[key].id, image:women[key].image, title: women[key].title, category:women[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: women[key].id,
+                          image: women[key].image,
+                          title: women[key].title,
+                          category: women[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -562,7 +621,7 @@ const searchItem = (e) => {
           ))}
         </div>
 
-{/* ascending order */}
+        {/* ascending order */}
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(asce).map((key) => (
             <div key={asce[key].id} className="group relative">
@@ -574,7 +633,19 @@ const searchItem = (e) => {
                   <h2 className="card-title">{asce[key].title}</h2>
                   <p>{asce[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: asce[key].id, image:asce[key].image, title: asce[key].title, category: asce[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: asce[key].id,
+                          image: asce[key].image,
+                          title: asce[key].title,
+                          category: asce[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -582,8 +653,7 @@ const searchItem = (e) => {
           ))}
         </div>
 
-
-{/* descing order */}
+        {/* descing order */}
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(desc).map((key) => (
             <div key={desc[key].id} className="group relative">
@@ -595,7 +665,19 @@ const searchItem = (e) => {
                   <h2 className="card-title">{desc[key].title}</h2>
                   <p>{desc[key].category}</p>
                   <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: desc[key].id, image:desc[key].image, title: desc[key].title, category:desc[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: desc[key].id,
+                          image: desc[key].image,
+                          title: desc[key].title,
+                          category: desc[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -616,7 +698,19 @@ const searchItem = (e) => {
                   <h2 className="card-title">{pagination[key].title}</h2>
                   <p>{pagination[key].category}</p>
                   <div className="card-actions justify-end">
-                    <button onClick={() => addToCart({id: pagination[key].id, image:pagination[key].image, title: pagination[key].title, category:pagination[key].category})} className="btn btn-primary">Add to cart</button>
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          id: pagination[key].id,
+                          image: pagination[key].image,
+                          title: pagination[key].title,
+                          category: pagination[key].category,
+                        })
+                      }
+                      className="btn btn-primary"
+                    >
+                      Add to cart
+                    </button>
                   </div>
                 </div>
               </div>
@@ -624,39 +718,45 @@ const searchItem = (e) => {
           ))}
         </div>
 
-{/* searching */}
+        {/* searching */}
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          
-              <div className="card w-50 h-90 bg-base-80 shadow-xl">
-                <figure>
-                  <img width={90} src={data.image} alt="Shoes" />
-                </figure>
-                <div className="card-body">
-                  <h2 className="card-title">{data.title}</h2>
-                  <p>{data.category}</p>
-                  <div className="card-actions justify-end">
-                  <button onClick={() => addToCart({id: data.id, image:data.image, title: data.title, category:data.category})} className="btn btn-primary">Add to cart</button>
-                  </div>
-                </div>
+          <div className="card w-50 h-90 bg-base-80 shadow-xl">
+            <figure>
+              <img width={90} src={data.image} alt="Shoes" />
+            </figure>
+            <div className="card-body">
+              <h2 className="card-title">{data.title}</h2>
+              <p>{data.category}</p>
+              <div className="card-actions justify-end">
+                <button
+                  onClick={() =>
+                    addToCart({
+                      id: data.id,
+                      image: data.image,
+                      title: data.title,
+                      category: data.category,
+                    })
+                  }
+                  className="btn btn-primary"
+                >
+                  Add to cart
+                </button>
               </div>
-            
+            </div>
+          </div>
         </div>
-
-
       </div>
-
-
 
       {/* pagination */}
 
-
-
       <div className="join">
-     <button onClick ={handlepagination1} className="join-item btn">1</button>
-      <button className="join-item btn btn-active">2</button>
-      <button className="join-item btn">3</button>
-     <button className="join-item btn">4</button>
-</div>
+        <button onClick={handlepagination1} className="join-item btn">
+          1
+        </button>
+        <button className="join-item btn btn-active">2</button>
+        <button className="join-item btn">3</button>
+        <button className="join-item btn">4</button>
+      </div>
     </div>
   );
 }
