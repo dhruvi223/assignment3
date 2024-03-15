@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { emailRegex, passwordRegex } from "../../constants/validation";
+import { emailMessages, passwordMessages } from "../../constants/messages";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -111,7 +112,7 @@ function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register("email", { required: true, pattern: emailRegex } )}
                 />
-                {errors.email && <p className="block text-xs text-red-700 text-left">Invalid Email address</p>}
+                {errors.email && <p className="block text-xs text-red-700 text-left">emailMessages.invalid</p>}
               </div>
             </div>
 
@@ -135,7 +136,7 @@ function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register("password", { required: true, pattern: passwordRegex })}
                 />
-                {errors.password && <p className="block text-xs text-red-700 text-left">Password is weak (must contain at least one digit, one lowercase letter, one uppercase letter, and be between 8 and 32 characters)</p>}
+                {errors.password && <p className="block text-xs text-red-700 text-left">passwordMessages.weak</p>}
               </div>
             </div>
 
