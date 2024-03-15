@@ -6,6 +6,18 @@ import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useDispatch } from "react-redux";
+
+import { fetchproduct } from "../redux/actions/productActions";
+import { searchproduct } from "../redux/actions/productActions";
+import { paginationFunction } from "../redux/actions/productActions";
+import { descFunction } from "../redux/actions/productActions";
+import { jewelleryFunction } from "../redux/actions/productActions";
+import { electronicsFunction } from "../redux/actions/productActions";
+import { menFunction } from "../redux/actions/productActions";
+import { womenFunction } from "../redux/actions/productActions";
+
+
 import {
   ChevronDownIcon,
   FunnelIcon,
@@ -50,40 +62,29 @@ function ProductList({ addToCart }) {
   const [data, setData] = useState("");
   const [pagination, setPagination] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handlepagination1 = () => {
+  const handlepagination1 = async () => {
     setProduct("");
-    fetch(`https://fakestoreapi.com/products?limit=5`)
-      .then((response) => response.json())
-      .then((json) => {
-        setPagination(json);
-      });
+    await dispatch(paginationFunction(setPagination));
   };
 
-  const handleback = () => {
-    fetch("https://fakestoreapi.com/products")
-      .then((response) => response.json())
-      .then((json) => {
-        setProduct(json);
-      });
+  const handleback = async () => {
+    await dispatch(fetchproduct(setProduct))
   };
 
   // searching
 
-  const searchItem = (e) => {
+  const searchItem = async (e) => {
     setSearch(e.target.value);
     const searchTerm = e.target.value;
     setProduct("");
-    //    if (e.target.value)
-    fetch(`https://fakestoreapi.com/products/${searchTerm}`)
-      .then((response) => response.json())
-      .then((json) => {
-        setData(json);
-      });
+    await dispatch(searchproduct(setData, searchTerm))
+
   };
   //sorting
 
-  const handleSort = (name) => {
+  const handleSort = async (name) => {
     setProduct("");
     setJewellery("");
     setElectronics("");
@@ -91,67 +92,46 @@ function ProductList({ addToCart }) {
     setWomen("");
     if (name == "Ascending") {
       setDesc("");
-      fetch("https://fakestoreapi.com/products?sort=asce")
-        .then((response) => response.json())
-        .then((json) => {
-          setAsce(json);
-        });
+      
+
     } else if (name == "Descending") {
       setAsce("");
-      fetch("https://fakestoreapi.com/products?sort=desc")
-        .then((response) => response.json())
-        .then((json) => {
-          setDesc(json);
-        });
+       await dispatch(descFunction(setDesc))
     }
   };
+  useEffect(() => {
+   const fetchProduct = async() => {
+    await dispatch(product(setProduct))
+   }
+   fetchProduct()
+  }, []);
 
   // filtering
 
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then((response) => response.json())
-      .then((json) => {
-        setProduct(json);
-      });
-  }, []);
 
-  const handleChange = (value) => (event) => {
+  const handleChange = (value) => async (event) => {
     if (event.target.checked == true) {
       setProduct("");
       if (value == "jewellery") {
-        fetch("https://fakestoreapi.com/products/category/jewelery")
-          .then((response) => response.json())
-          .then((json) => {
-            setJewellery(json);
-          });
+        await dispatch(jewelleryFunction(setJewellery))
+
       } else if (value == "electronics") {
-        fetch("https://fakestoreapi.com/products/category/electronics")
-          .then((response) => response.json())
-          .then((json) => {
-            setElectronics(json);
-          });
+        await dispatch(electronicsFunction(setElectronics))
+        
       } else if (value == "men") {
-        fetch(`https://fakestoreapi.com/products/category/men's%20clothing`)
-          .then((response) => response.json())
-          .then((json) => {
-            setMen(json);
-          });
+        await dispatch(menFunction(setMen))
+
       } else if (value == "women") {
-        fetch(`https://fakestoreapi.com/products/category/women's%20clothing`)
-          .then((response) => response.json())
-          .then((json) => {
-            setWomen(json);
-          });
+        await dispatch(womenFunction(setWomen))
       }
     } else {
-      fetch("https://fakestoreapi.com/products")
-        .then((response) => response.json())
-        .then((json) => {
-          setProduct(json);
-        });
+      const fetchhProduct = async() => {
+        await dispatch(product(setProduct))
+       }
+       fetchhProduct()
 
-      if (value == "jewellery") {
+     
+       if (value == "jewellery") {
         setJewellery("");
       } else if (value == "electronics") {
         setElectronics("");
@@ -295,7 +275,7 @@ function ProductList({ addToCart }) {
                     placeholder="Search"
                     onChange={searchItem}
                   />
-                  <button onClick={handleback}>back</button>
+                 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -753,9 +733,9 @@ function ProductList({ addToCart }) {
         <button onClick={handlepagination1} className="join-item btn">
           1
         </button>
-        <button className="join-item btn btn-active">2</button>
-        <button className="join-item btn">3</button>
-        <button className="join-item btn">4</button>
+        <button onClick={handlepagination1} className="join-item btn btn-active">2</button>
+        <button onClick={handlepagination1} className="join-item btn">3</button>
+        <button onClick={handlepagination1} className="join-item btn">4</button>
       </div>
     </div>
   );

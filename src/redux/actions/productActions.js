@@ -85,3 +85,120 @@ export const signup = (
     }
   };
 };
+
+
+
+export const fetchproduct = (setProduct) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.FETCH_PRODUCT });
+    fetch(`https://fakestoreapi.com/products`)
+      .then((response) => response.json())
+      .then((json) => {
+        setProduct(json);
+      });
+  };
+
+}
+
+export const searchproduct = (setData, searchTerm) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.SEARCH });
+    fetch(`https://fakestoreapi.com/products/${searchTerm}`)
+    .then((response) => response.json())
+    .then((json) => {
+      setData(json);
+    });
+
+  };
+}
+
+
+export const paginationFunction = (setPagination) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.PAGINATION });
+    fetch(`https://fakestoreapi.com/products?limit=5`)
+    .then((response) => response.json())
+    .then((json) => {
+      setPagination(json);
+    });
+
+  };
+}
+
+
+export const descFunction = (setDesc) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.DESCENDING });
+    fetch("https://fakestoreapi.com/products?sort=desc")
+        .then((response) => response.json())
+        .then((json) => {
+          setDesc(json);
+        });
+  };
+}
+
+
+export const asceFunction = (setAsce) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.ASCENDING});
+     fetch("https://fakestoreapi.com/products?sort=asce")
+        .then((response) => response.json())
+        .then((json) => {
+          setAsce(json);
+        });
+  };
+}
+
+
+export const jewelleryFunction = (setJewellery) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.JEWELLERY});
+
+    fetch("https://fakestoreapi.com/products/category/jewelery")
+          .then((response) => response.json())
+          .then((json) => {
+            setJewellery(json);
+          });
+  };
+}
+
+
+export const electronicsFunction = (setElectronics) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.ELECTRONICS});
+
+    fetch("https://fakestoreapi.com/products/category/electronics")
+          .then((response) => response.json())
+          .then((json) => {
+            setElectronics(json);
+          });
+
+  };
+}
+
+
+export const menFunction = (setMen) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.MEN});
+    
+    fetch(`https://fakestoreapi.com/products/category/men's%20clothing`)
+          .then((response) => response.json())
+          .then((json) => {
+            setMen(json);
+          });
+
+  };
+}
+
+
+export const womenFunction = (setWomen) => {
+  return async (dispatch) => {
+    dispatch({ type: ActionTypes.WOMEN});
+
+    fetch(`https://fakestoreapi.com/products/category/women's%20clothing`)
+          .then((response) => response.json())
+          .then((json) => {
+            setWomen(json);
+          });
+  };
+}
