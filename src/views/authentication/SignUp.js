@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { emailRegex, passwordRegex } from "../../constants/validation";
-import { emailMessages, passwordMessages } from "../../constants/messages";
+import { emailMessages, passwordMessages, name } from "../../constants/messages";
 
 function SignUp() {
   const [email, setEmail] = useState("");
@@ -71,7 +71,7 @@ function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register("firstName", { required: true, maxLength: 10 })}
               />
-              {errors.firstName && <p className="block text-xs text-red-700 text-left">Please check the First Name</p>}
+              {errors.firstName && <p className="block text-xs text-red-700 text-left">{name.firstname}</p>}
               </div>
             </div>
 
@@ -92,7 +92,7 @@ function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register("lastName", { required: true, maxLength: 10 })}
                 />
-                {errors.lastName && <p className="block text-xs text-red-700 text-left">Please check the Last Name</p>}
+                {errors.lastName && <p className="block text-xs text-red-700 text-left">{name.lastname}</p>}
               </div>
             </div>
             <div>
@@ -112,7 +112,7 @@ function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register("email", { required: true, pattern: emailRegex } )}
                 />
-                {errors.email && <p className="block text-xs text-red-700 text-left">emailMessages.invalid</p>}
+                {errors.email && <p className="block text-xs text-red-700 text-left">{emailMessages.invalid}</p>}
               </div>
             </div>
 
@@ -136,7 +136,7 @@ function SignUp() {
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register("password", { required: true, pattern: passwordRegex })}
                 />
-                {errors.password && <p className="block text-xs text-red-700 text-left">passwordMessages.weak</p>}
+                {errors.password && <p className="block text-xs text-red-700 text-left">{passwordMessages.weak}</p>}
               </div>
             </div>
 
