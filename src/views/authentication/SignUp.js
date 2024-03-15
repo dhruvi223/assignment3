@@ -4,7 +4,6 @@ import { toast } from "react-hot-toast";
 import { signup } from "../../redux/actions/productActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { emailMessages, passwordMessages } from "../../constants/messages";
 import { useForm } from "react-hook-form";
 import { emailRegex, passwordRegex } from "../../constants/validation";
 

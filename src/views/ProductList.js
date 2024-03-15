@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
@@ -16,7 +15,6 @@ import { jewelleryFunction } from "../redux/actions/productActions";
 import { electronicsFunction } from "../redux/actions/productActions";
 import { menFunction } from "../redux/actions/productActions";
 import { womenFunction } from "../redux/actions/productActions";
-
 
 import {
   ChevronDownIcon,
@@ -64,13 +62,22 @@ function ProductList({ addToCart }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handlepagination1 = async () => {
+  // fetching all products
+  useEffect(() => {
+    const fetchProduct = async () => {
+      await dispatch(product(setProduct));
+    };
+    fetchProduct();
+  }, []);
+
+  //pagination
+  const handlepagination = async () => {
     setProduct("");
     await dispatch(paginationFunction(setPagination));
   };
 
   const handleback = async () => {
-    await dispatch(fetchproduct(setProduct))
+    await dispatch(fetchproduct(setProduct));
   };
 
   // searching
@@ -79,9 +86,9 @@ function ProductList({ addToCart }) {
     setSearch(e.target.value);
     const searchTerm = e.target.value;
     setProduct("");
-    await dispatch(searchproduct(setData, searchTerm))
-
+    await dispatch(searchproduct(setData, searchTerm));
   };
+
   //sorting
 
   const handleSort = async (name) => {
@@ -92,46 +99,33 @@ function ProductList({ addToCart }) {
     setWomen("");
     if (name == "Ascending") {
       setDesc("");
-      
-
     } else if (name == "Descending") {
       setAsce("");
-       await dispatch(descFunction(setDesc))
+      await dispatch(descFunction(setDesc));
     }
   };
-  useEffect(() => {
-   const fetchProduct = async() => {
-    await dispatch(product(setProduct))
-   }
-   fetchProduct()
-  }, []);
 
   // filtering
-
 
   const handleChange = (value) => async (event) => {
     if (event.target.checked == true) {
       setProduct("");
       if (value == "jewellery") {
-        await dispatch(jewelleryFunction(setJewellery))
-
+        await dispatch(jewelleryFunction(setJewellery));
       } else if (value == "electronics") {
-        await dispatch(electronicsFunction(setElectronics))
-        
+        await dispatch(electronicsFunction(setElectronics));
       } else if (value == "men") {
-        await dispatch(menFunction(setMen))
-
+        await dispatch(menFunction(setMen));
       } else if (value == "women") {
-        await dispatch(womenFunction(setWomen))
+        await dispatch(womenFunction(setWomen));
       }
     } else {
-      const fetchhProduct = async() => {
-        await dispatch(product(setProduct))
-       }
-       fetchhProduct()
+      const fetchhProduct = async () => {
+        await dispatch(product(setProduct));
+      };
+      fetchhProduct();
 
-     
-       if (value == "jewellery") {
+      if (value == "jewellery") {
         setJewellery("");
       } else if (value == "electronics") {
         setElectronics("");
@@ -275,7 +269,7 @@ function ProductList({ addToCart }) {
                     placeholder="Search"
                     onChange={searchItem}
                   />
-                 
+
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 16 16"
@@ -539,6 +533,8 @@ function ProductList({ addToCart }) {
           ))}
         </div>
 
+        {/* category men */}
+
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(men).map((key) => (
             <div key={men[key].id} className="group relative">
@@ -569,6 +565,8 @@ function ProductList({ addToCart }) {
             </div>
           ))}
         </div>
+
+        {/* category women */}
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(women).map((key) => (
@@ -633,7 +631,7 @@ function ProductList({ addToCart }) {
           ))}
         </div>
 
-        {/* descing order */}
+        {/* descending order */}
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(desc).map((key) => (
             <div key={desc[key].id} className="group relative">
@@ -730,12 +728,18 @@ function ProductList({ addToCart }) {
       {/* pagination */}
 
       <div className="join">
-        <button onClick={handlepagination1} className="join-item btn">
+        <button onClick={handlepagination} className="join-item btn">
           1
         </button>
-        <button onClick={handlepagination1} className="join-item btn">2</button>
-        <button onClick={handlepagination1} className="join-item btn">3</button>
-        <button onClick={handlepagination1} className="join-item btn">4</button>
+        <button onClick={handlepagination} className="join-item btn">
+          2
+        </button>
+        <button onClick={handlepagination} className="join-item btn">
+          3
+        </button>
+        <button onClick={handlepagination} className="join-item btn">
+          4
+        </button>
       </div>
     </div>
   );
