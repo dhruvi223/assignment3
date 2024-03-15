@@ -1,19 +1,19 @@
 import React from "react";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { signup } from "../redux/actions/productActions";
+import { signup } from "../../redux/actions/productActions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { emailMessages, passwordMessages } from "../constants/messages";
+import { emailMessages, passwordMessages } from "../../constants/messages";
+import { useForm } from "react-hook-form";
+import { emailRegex, passwordRegex } from "../../constants/validation";
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [cpassword, setCpassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const {register, handleSubmit, formState: {errors}} = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,33 +26,14 @@ function SignUp() {
 
   // localStorage.setItem('users', JSON.stringify(user))
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setEmailError("");
-    setPasswordError("");
-
-    if (email === "") {
-      setEmailError(emailMessages.empty);
-    }
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-      setEmailError(emailMessages.invalid);
-    }
-
-    if (password === "") {
-      setPasswordError(passwordMessages.empty);
-    }
-
-    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/.test(password)) {
-      setPasswordError(passwordMessages.weak);
-      return;
-    }
+  const onSubmit = async (data) => {
     await dispatch(
       signup(
-        email,
-        password,
-        firstName,
-        lastName,
-        cpassword,
+        data.email,
+        data.password,
+        data.firstName,
+        data.lastName,
+        data.cpassword,
         setFirstName,
         setLastName,
         setEmail,
@@ -72,7 +53,7 @@ function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label
                 htmlFor="email"
@@ -86,10 +67,11 @@ function SignUp() {
                   name="fname"
                   type="text"
                   autoComplete="first name"
-                  onChange={(e) => setFirstName(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                  {...register("firstName", { required: true, maxLength: 10 })}
+              />
+              {errors.firstName && <p className="block text-xs text-red-700 text-left">Please check the First Name</p>}
               </div>
             </div>
 
@@ -106,10 +88,11 @@ function SignUp() {
                   name="lname"
                   type="text"
                   autoComplete="email"
-                  onChange={(e) => setLastName(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("lastName", { required: true, maxLength: 10 })}
                 />
+                {errors.lastName && <p className="block text-xs text-red-700 text-left">Please check the Last Name</p>}
               </div>
             </div>
             <div>
@@ -125,10 +108,11 @@ function SignUp() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("email", { required: true, pattern: emailRegex } )}
                 />
+                {errors.email && <p className="block text-xs text-red-700 text-left">Invalid Email address</p>}
               </div>
             </div>
 
@@ -148,10 +132,11 @@ function SignUp() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("password", { required: true, pattern: passwordRegex })}
                 />
+                {errors.password && <p className="block text-xs text-red-700 text-left">Password is weak (must contain at least one digit, one lowercase letter, one uppercase letter, and be between 8 and 32 characters)</p>}
               </div>
             </div>
 
@@ -166,13 +151,13 @@ function SignUp() {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
+                  id="cpassword"
+                  name="cpassword"
                   type="password"
                   autoComplete="current-password"
-                  onChange={(e) => setCpassword(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("cpassword")}
                 />
               </div>
             </div>

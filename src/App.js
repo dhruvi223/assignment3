@@ -2,12 +2,12 @@ import logo from "./logo.svg";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
+import SignIn from "./views/authentication/SignIn";
+import SignUp from "./views/authentication/SignUp";
 import { Toaster, toast } from "react-hot-toast";
-import ProductList from "./pages/ProductList";
-import ViewCart from "./pages/ViewCart";
-import Home from "./pages/Home";
+import ProductList from "./views/ProductList";
+import ViewCart from "./views/ViewCart";
+import Home from "./views/Home";
 import { useState } from "react";
 
 function App() {

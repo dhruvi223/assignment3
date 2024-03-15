@@ -8,6 +8,7 @@ function Navbar() {
   const loggedin = localStorage.getItem("loggedIn");
 
   const handleLogout = () => {
+    navigate('/productlist')
     localStorage.removeItem("loggedIn");
   };
 

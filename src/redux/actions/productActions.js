@@ -24,7 +24,7 @@ export const signin = (email, password, setEmail, setPassword, navigate) => {
         setEmail(email);
         setPassword(password);
         toast.success("logged in successfully");
-        navigate("/");
+        navigate("/productlist");
       } else {
         toast.error("password is incorrect");
       }
@@ -76,7 +76,7 @@ export const signup = (
           password: hashedPassword,
         };
         localStorage.setItem("loggedIn", JSON.stringify(loggedInuser));
-        navigate("/");
+        navigate("/productlist");
       } else {
         toast.error("user is already registered");
       }

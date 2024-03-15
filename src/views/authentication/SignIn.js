@@ -1,41 +1,24 @@
 import React from "react";
 import { useState } from "react";
+import { useForm } from "react-hook-form"
 
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { signin } from "../redux/actions/productActions";
+import { signin } from "../../redux/actions/productActions";
 import { useNavigate } from "react-router-dom";
-import { emailMessages, passwordMessages } from "../constants/messages";
+import { emailMessages, passwordMessages } from "../../constants/messages";
+import { emailRegex, passwordRegex } from "../../constants/validation";
 
 function SignIn() {
+  const {register, handleSubmit, formState: {errors}} = useForm();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setEmailError("");
-    setPasswordError("");
+  const onSubmit = async (data) => {
 
-    if (email === "") {
-      setEmailError(emailMessages.empty);
-    }
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
-      setEmailError(emailMessages.invalid);
-    }
-
-    if (password === "") {
-      setPasswordError(passwordMessages.empty);
-    }
-
-    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/.test(password)) {
-      setPasswordError(passwordMessages.weak);
-      return;
-    }
-    await dispatch(signin(email, password, setEmail, setPassword, navigate));
+    await dispatch(signin(data.email, data.password, setEmail, setPassword, navigate));
   };
 
   return (
@@ -48,7 +31,7 @@ function SignIn() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label
                 htmlFor="email"
@@ -62,13 +45,11 @@ function SignIn() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("email", { required: true, pattern: emailRegex } )}
                 />
-                <label className="block text-xs text-red-700 text-left">
-                  {emailError}
-                </label>
+                {errors.email && <p className="block text-xs text-red-700 text-left">Invalid Email address</p>}
               </div>
             </div>
 
@@ -88,13 +69,11 @@ function SignIn() {
                   name="password"
                   type="password"
                   autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register("password", { required: true, pattern: passwordRegex })}
                 />
-                <label className="block text-xs text-red-700 text-left ">
-                  {passwordError}
-                </label>
+                {errors.password && <p className="block text-xs text-red-700 text-left ">Password is weak (must contain at least one digit, one lowercase letter, one uppercase letter, and be between 8 and 32 characters)</p>}
               </div>
             </div>
 
