@@ -12,6 +12,7 @@ function ViewCart() {
   const index = userDataj.findIndex((user) => user.email === email);
 
   const cart = JSON.parse(localStorage.getItem("cart"));
+  
 
   return (
     <div>
@@ -22,7 +23,7 @@ function ViewCart() {
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {Object.keys(cart).map((key) => (
             <div key={cart[key].id} className="group relative">
-              <div className="card w-50 h-90 bg-base-80 shadow-xl">
+              <div className="card w-full h-full bg-base-80 shadow-xl">
                 <figure>
                   <img width={90} src={cart[key].image} alt="Shoes" />
                 </figure>

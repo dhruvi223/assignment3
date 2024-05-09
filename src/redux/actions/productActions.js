@@ -100,13 +100,15 @@ export const fetchproduct = (setProduct) => {
 
 }
 
-export const searchproduct = (setData, searchTerm) => {
+export const searchproduct = (setData, searchTerm, data) => {
   return async (dispatch) => {
     dispatch({ type: ActionTypes.SEARCH });
     fetch(`https://fakestoreapi.com/products/${searchTerm}`)
     .then((response) => response.json())
     .then((json) => {
       setData(json);
+      console.log(json);
+      console.log(data);
     });
 
   };
